@@ -1,17 +1,12 @@
 import Hapi from 'hapi';
-import { ApolloServer } from 'apollo-server-hapi';
-import { schema } from './schema';
 const HOST = 'localhost';
 const PORT = 3000;
-const apolloServer = new ApolloServer({
-    schema
-})
+
 function init() {
     const server = new Hapi.server({
         host: HOST,
         port: PORT,
     });
-    apolloServer.applyMiddleware({ app: server })
     server.route({
         method: 'GET',
         path: '/',
@@ -21,7 +16,7 @@ function init() {
     })
     try {
         server.start();
-        console.log(`Server is running at: ${server}`);
+        console.log(`Server is running at: ${server.info}`);
     } catch (err) {
         console.log(`Error while starting server: ${err.message}`)
     }
