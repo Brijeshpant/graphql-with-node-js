@@ -12,15 +12,4 @@ export const ProductType = new GraphQLObjectType({
 
     })
 })
-export const ProductInputType = new GraphQLInputObjectType({
-    name: "ProductInput",
-    description: "Product input type",
-    fields: () => ({
-        name: { type: GraphQLString },
-        brand: { type: GraphQLString },
-        category: { type: GraphQLString },
-        price: { type: GraphQLFloat },
-
-    })
-})
 
