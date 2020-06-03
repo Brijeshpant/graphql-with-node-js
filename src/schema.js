@@ -28,9 +28,10 @@ export const schema = new GraphQLSchema({
                 type: new GraphQLList(ProductType),
                 description: "List of products",
                 resolve: (parent,args, context) => {
+                    console.log(`context ${JSON.stringify(context)}`)
                     const { user } = context;
-                    if (user.role != 'USER' && user.role != 'ADMIN'){
-                        throw new Error('User is not autherized to access the resource')
+                    if (user.role != 'ADMIN' && user.role != 'CUST') {
+                        throw new Error('UnAuthorized')
                     }
                     return products;
                 }
@@ -49,12 +50,12 @@ export const schema = new GraphQLSchema({
                 resolve: (parent, { input}, context) => {
                     const { user } = context;
                     if (user.role != 'ADMIN') {
-                        throw new Error('User is not autherized to access the resource')
+                        throw new Error('UnAuthorized')
                     }
+                    console.log(`context ${JSON.stringify(context)}`)
                     const id = products.length + 1;
                     const newProduct = Object.assign(input, {id})
                     products.push(newProduct)
-
                     return newProduct
                 }
             }
