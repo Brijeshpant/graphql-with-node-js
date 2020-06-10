@@ -1,6 +1,7 @@
 import Hapi from 'hapi';
 import { ApolloServer, AuthenticationError} from 'apollo-server-hapi';
 import { schema } from './schema';
+
 import { getUser} from './users'
 const HOST = 'localhost';
 const PORT = 3000;
@@ -8,11 +9,10 @@ const apolloServer = new ApolloServer({
     schema,
     debug: false,
     context: ({request}) => {
-        const user = getUser(request.headers['auth'])
+        const user = getUser(request.headers['authorization'])
         if(user == null) {
             throw new AuthenticationError('Invalid user')
         }
-        console.log(` Auth Header ${request.headers['auth']}`)
         return { user};
     }
 })

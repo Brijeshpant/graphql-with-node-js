@@ -28,11 +28,11 @@ export const schema = new GraphQLSchema({
                 type: new GraphQLList(ProductType),
                 description: "List of products",
                 resolve: (parent,args, context) => {
-                    console.log(`context ${JSON.stringify(context)}`)
                     const { user } = context;
                     if (user.role != 'ADMIN' && user.role != 'CUST') {
                         throw new Error('UnAuthorized')
                     }
+                    console.log(`products ${JSON.stringify(products)}`)
                     return products;
                 }
             }
@@ -52,10 +52,10 @@ export const schema = new GraphQLSchema({
                     if (user.role != 'ADMIN') {
                         throw new Error('UnAuthorized')
                     }
-                    console.log(`context ${JSON.stringify(context)}`)
                     const id = products.length + 1;
                     const newProduct = Object.assign(input, {id})
                     products.push(newProduct)
+                    console.log(`newProduct ${JSON.stringify(newProduct)}`)
                     return newProduct
                 }
             }
