@@ -1,11 +1,13 @@
 import Hapi from 'hapi';
-import { ApolloServer } from 'apollo-server-hapi';
-import { schema } from './schema';
+import { ApolloServer, AuthenticationError } from 'apollo-server-hapi';
+import {typeDefs} from './typeDefs'
+import { resolvers } from './resolvers'
 const HOST = 'localhost';
 const PORT = 3000;
+
 const apolloServer = new ApolloServer({
-    schema
-})
+    typeDefs, resolvers
+    })
 function init() {
     const server = new Hapi.server({
         host: HOST,
@@ -21,12 +23,10 @@ function init() {
     })
     try {
         server.start();
-        console.log(`Server is running at: ${server}`);
+        console.log(`Server is running at: ${JSON.stringify(server.info.uri)}`);
     } catch (err) {
         console.log(`Error while starting server: ${err.message}`)
     }
-
-    console.log(`Server running at: ${server.info.uri}`);
 }
 
 init(); 
