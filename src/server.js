@@ -1,19 +1,20 @@
 import Hapi from 'hapi';
-import { ApolloServer, AuthenticationError} from 'apollo-server-hapi';
-import { schema } from './schema';
-
-import { getUser} from './users'
+import { ApolloServer, AuthenticationError } from 'apollo-server-hapi';
+import { getUser } from './users'
+import { typeDefs } from './typeDefs'
+import { resolvers } from './resolvers'
 const HOST = 'localhost';
 const PORT = 3000;
+
 const apolloServer = new ApolloServer({
-    schema,
+    typeDefs, resolvers,
     debug: false,
-    context: ({request}) => {
+    context: ({ request }) => {
         const user = getUser(request.headers['authorization'])
-        if(user == null) {
+        if (user == null) {
             throw new AuthenticationError('Invalid user')
         }
-        return { user};
+        return { user };
     }
 })
 function init() {
@@ -31,7 +32,7 @@ function init() {
     })
     try {
         server.start();
-        console.log(`Server is running at: ${server.info.uri}`);
+        console.log(`Server is running at: ${JSON.stringify(server.info.uri)}`);
     } catch (err) {
         console.log(`Error while starting server: ${err.message}`)
     }
